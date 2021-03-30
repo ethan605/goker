@@ -39,7 +39,7 @@ type Card interface {
 	Suit() Suit
 }
 
-var _ Card = &cardStruct{}
+var _ Card = (*cardStruct)(nil)
 
 func (card cardStruct) Rank() Rank {
 	return card.rank
