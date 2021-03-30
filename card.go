@@ -26,9 +26,10 @@ const (
 	Jack
 	Queen
 	King
+	Ace
 )
 
-type _Card struct {
+type card struct {
 	rank Rank
 	suit Suit
 }
@@ -38,19 +39,19 @@ type Card interface {
 	Suit() Suit
 }
 
-var _ Card = &_Card{}
+var _ Card = &card{}
 
-func (card _Card) Rank() Rank {
-	return card.rank
+func (c card) Rank() Rank {
+	return c.rank
 }
 
-func (card _Card) Suit() Suit {
-	return card.suit
+func (c card) Suit() Suit {
+	return c.suit
 }
 
 func (rank Rank) validate() error {
 	switch {
-	case rank >= Two && rank <= King:
+	case rank >= Two && rank <= Ace:
 		return nil
 	}
 
@@ -68,12 +69,12 @@ func (suit Suit) validate() error {
 
 func NewCard(rank Rank, suit Suit) (Card, error) {
 	if err := rank.validate(); err != nil {
-		return _Card{}, err
+		return card{}, err
 	}
 
 	if err := suit.validate(); err != nil {
-		return _Card{}, err
+		return card{}, err
 	}
 
-	return _Card{rank, suit}, nil
+	return card{rank, suit}, nil
 }

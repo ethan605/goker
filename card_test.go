@@ -3,19 +3,21 @@ package goker
 import "testing"
 
 func TestNewCard(t *testing.T) {
-	cardZero := _Card{}
+	cardZero := card{}
 
 	tables := []struct {
 		rank Rank
 		suit Suit
-		card _Card
+		card Card
 		err  string
 	}{
-		{1, Heart, cardZero, "Invalid rank"},
-		{15, Spade, cardZero, "Invalid rank"},
+		{1, "Heart", cardZero, "Invalid rank"},
+		{15, "Spade", cardZero, "Invalid rank"},
 		{10, "Fake", cardZero, "Invalid suit"},
-		{10, Heart, _Card{10, Heart}, ""},
-		{10, Heart, _Card{10, Heart}, ""},
+		{7, "Heart", card{Seven, Heart}, ""},
+		{11, "Club", card{Jack, Club}, ""},
+		{13, "Diamond", card{King, Diamond}, ""},
+		{14, "Spade", card{Ace, Spade}, ""},
 	}
 
 	for _, table := range tables {
@@ -37,8 +39,8 @@ func TestCardGetters(t *testing.T) {
 		rank Rank
 		suit Suit
 	}{
-		{_Card{10, Heart}, 10, Heart},
-		{_Card{3, Spade}, 3, Spade},
+		{card{Seven, Heart}, 7, "Heart"},
+		{card{Three, Spade}, 3, "Spade"},
 	}
 
 	for _, table := range tables {
