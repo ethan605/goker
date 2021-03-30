@@ -29,7 +29,7 @@ const (
 	Ace
 )
 
-type card struct {
+type cardStruct struct {
 	rank Rank
 	suit Suit
 }
@@ -39,14 +39,14 @@ type Card interface {
 	Suit() Suit
 }
 
-var _ Card = &card{}
+var _ Card = &cardStruct{}
 
-func (c card) Rank() Rank {
-	return c.rank
+func (card cardStruct) Rank() Rank {
+	return card.rank
 }
 
-func (c card) Suit() Suit {
-	return c.suit
+func (card cardStruct) Suit() Suit {
+	return card.suit
 }
 
 func (rank Rank) validate() error {
@@ -69,12 +69,12 @@ func (suit Suit) validate() error {
 
 func NewCard(rank Rank, suit Suit) (Card, error) {
 	if err := rank.validate(); err != nil {
-		return card{}, err
+		return cardStruct{}, err
 	}
 
 	if err := suit.validate(); err != nil {
-		return card{}, err
+		return cardStruct{}, err
 	}
 
-	return card{rank, suit}, nil
+	return cardStruct{rank, suit}, nil
 }

@@ -3,7 +3,7 @@ package goker
 import "testing"
 
 func TestNewCard(t *testing.T) {
-	cardZero := card{}
+	cardZero := cardStruct{}
 
 	tables := []struct {
 		rank Rank
@@ -14,10 +14,10 @@ func TestNewCard(t *testing.T) {
 		{1, "Heart", cardZero, "Invalid rank"},
 		{15, "Spade", cardZero, "Invalid rank"},
 		{10, "Fake", cardZero, "Invalid suit"},
-		{7, "Heart", card{Seven, Heart}, ""},
-		{11, "Club", card{Jack, Club}, ""},
-		{13, "Diamond", card{King, Diamond}, ""},
-		{14, "Spade", card{Ace, Spade}, ""},
+		{7, "Heart", cardStruct{Seven, Heart}, ""},
+		{11, "Club", cardStruct{Jack, Club}, ""},
+		{13, "Diamond", cardStruct{King, Diamond}, ""},
+		{14, "Spade", cardStruct{Ace, Spade}, ""},
 	}
 
 	for _, table := range tables {
@@ -39,8 +39,8 @@ func TestCardGetters(t *testing.T) {
 		rank Rank
 		suit Suit
 	}{
-		{card{Seven, Heart}, 7, "Heart"},
-		{card{Three, Spade}, 3, "Spade"},
+		{cardStruct{Seven, Heart}, 7, "Heart"},
+		{cardStruct{Three, Spade}, 3, "Spade"},
 	}
 
 	for _, table := range tables {
