@@ -1,6 +1,9 @@
 package goker
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNewCard(t *testing.T) {
 	cardZero := cardStruct{}
@@ -38,14 +41,19 @@ func TestCardGetters(t *testing.T) {
 		card Card
 		rank Rank
 		suit Suit
+		str  string
 	}{
-		{cardStruct{Seven, Heart}, 7, "Heart"},
-		{cardStruct{Three, Spade}, 3, "Spade"},
+		{cardStruct{7, Heart}, 7, "Heart", "7 of Heart"},
+		{cardStruct{3, Spade}, 3, "Spade", "3 of Spade"},
+		{cardStruct{Jack, Club}, 11, "Club", "Jack of Club"},
+		{cardStruct{Queen, Diamond}, 12, "Diamond", "Queen of Diamond"},
+		{cardStruct{King, Heart}, 13, "Heart", "King of Heart"},
 	}
 
 	for _, table := range tables {
 		rank := table.card.Rank()
 		suit := table.card.Suit()
+		str := fmt.Sprint(table.card)
 
 		switch {
 		case rank != table.rank:
@@ -53,6 +61,9 @@ func TestCardGetters(t *testing.T) {
 
 		case suit != table.suit:
 			t.Errorf("Card.Rank() returns %q, want %q", suit, table.suit)
+
+		case str != table.str:
+			t.Errorf("Card.String() returns %q, want %q", str, table.str)
 		}
 	}
 }
