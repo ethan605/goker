@@ -4,8 +4,11 @@ import (
 	"fmt"
 )
 
+// Rank of card in a standard Poker deck.
+// Available values: 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace
 type Rank int
 
+// Ranks enum
 const (
 	Two Rank = iota + 2
 	Three
@@ -22,8 +25,11 @@ const (
 	Ace
 )
 
+// Suit of card in a standard Poker deck.
+// Available values: Club, Diamond, Heart, Spade
 type Suit string
 
+// Suits enum
 const (
 	Club    Suit = "Club"
 	Diamond Suit = "Diamond"
@@ -31,13 +37,14 @@ const (
 	Spade   Suit = "Spade"
 )
 
+// Card represents information about a standard Poker card
 type Card interface {
 	fmt.Stringer
 
-	// Available ranks: 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace
+	// Standard ranks: 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace
 	Rank() Rank
 
-	// Available suits: Club, Diamond, Heart, Spade
+	// Standard suits: Club, Diamond, Heart, Spade
 	Suit() Suit
 }
 

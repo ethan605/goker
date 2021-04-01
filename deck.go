@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+// Deck contains 2 stacks of Cards: remaining & dealt cards. Remaining cards are always enclosed.
+// At initialization, there are no dealt cards. After each turn of Deal(),
+// some of the remaining cards are disclosed and moved to the dealt stack.
 type Deck interface {
 	fmt.Stringer
 
@@ -42,6 +45,7 @@ func (deck *deckStruct) Deal(cardsNum int) []Card {
 	return drawnCards
 }
 
+// NewDeck creates a new Deck with fully shuffled cards
 func NewDeck() Deck {
 	deck := assembleDeck()
 	return &deckStruct{remainingCards: shuffleDeck(deck)}
