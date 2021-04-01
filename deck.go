@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+// Deck contains 2 stacks of Cards: remaining & dealt cards. Remaining cards are always enclosed.
+// At initialization, there are no dealt cards. After each turn of Deal(),
+// some of the remaining cards are disclosed and moved to the dealt stack.
 type Deck interface {
 	fmt.Stringer
 
@@ -42,8 +45,10 @@ func (deck *deckStruct) Deal(cardsNum int) []Card {
 	return drawnCards
 }
 
+// NewDeck creates a new Deck with fully shuffled cards
 func NewDeck() Deck {
-	return &deckStruct{remainingCards: initDeck()}
+	deck := assembleDeck()
+	return &deckStruct{remainingCards: shuffleDeck(deck)}
 }
 
 /* Private stuffs */
@@ -64,26 +69,31 @@ func shuffleCards(cards []Card) {
 	})
 }
 
-func initDeck() []Card {
+func assembleDeck() []Card {
 	deck := []Card{}
-	cardsChannel := make(chan Card)
+	ch := make(chan Card)
 
-	// Loop through all ranks & suits in goroutines, cards will be appened to deck randomly
+	// Loop through all ranks & suits in goroutines,
+	// then append the cards to the deck randomly
 	for _, rank := range allRanks {
 		go func(rank Rank) {
 			for _, suit := range allSuits {
 				go func(suit Suit) {
-					cardsChannel <- cardStruct{rank, suit}
+					ch <- cardStruct{rank, suit}
 				}(suit)
 			}
 		}(rank)
 	}
 
 	for i := 0; i < deckSize; i++ {
-		deck = append(deck, <-cardsChannel)
+		deck = append(deck, <-ch)
 	}
 
-	shuffleChannel := make(chan []Card)
+	return deck
+}
+
+func shuffleDeck(deck []Card) []Card {
+	ch := make(chan []Card)
 
 	// Shuffle the whole deck 3 times to make sure the cards order is fully random
 	go func() {
@@ -91,8 +101,8 @@ func initDeck() []Card {
 			shuffleCards(deck)
 		}
 
-		shuffleChannel <- deck
+		ch <- deck
 	}()
 
-	return <-shuffleChannel
+	return <-ch
 }
