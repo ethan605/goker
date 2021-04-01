@@ -4,8 +4,8 @@ Poker machine, written in Go
 
 **Table of Contents**
 - [Components](#components)
-  - [Cards](#cards)
-  - [Decks](#decks)
+	- [Cards](#cards)
+	- [Decks](#decks)
 
 ## Components
 
@@ -32,8 +32,8 @@ The only way to access to a Card instance is via the [Decks](#decks)
 ### Decks
 
 A deck is a collection of cards, with 2 representative information:
-  - Cards remaining in stack
-  - Cards being dealt
+	- Cards remaining in stack
+	- Cards being dealt
 
 The `Deck` interface provides an accessible way to "deal" with cards:
 
