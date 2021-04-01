@@ -3,7 +3,9 @@
 Poker machine, written in Go
 
 **Table of Contents**
-1. [Components](#components)
+- [Components](#components)
+  - [Cards](#cards)
+  - [Decks](#decks)
 
 ## Components
 
@@ -52,22 +54,37 @@ Notes: only dealt cards are accessible, remaining cards are always enclosed.
 Example for playing with decks:
 
 ```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/ethan605/goker"
+)
+
+func main() {
 	deck := goker.NewDeck()
+	fmt.Println(deck) // goker.Deck<dealt: 0, remaining: 52>
 	fmt.Println(deck.DealtCards())
 
 	newCards := deck.Deal(1)
+	fmt.Println(deck)                                  // goker.Deck<dealt: 1, remaining: 51>
 	fmt.Println("New dealt cards:", newCards)          // 1 card dealt in this turn
 	fmt.Println("All dealt cards:", deck.DealtCards()) // 1 card dealt in total
 
 	newCards = deck.Deal(5)
+	fmt.Println(deck)                                  // goker.Deck<dealt: 6, remaining: 46>
 	fmt.Println("New dealt cards:", newCards)          // 5 cards dealt in this turn
 	fmt.Println("All dealt cards:", deck.DealtCards()) // 6 cards dealt in total
 
 	newCards = deck.Deal(99)
+	fmt.Println(deck)                                  // goker.Deck<dealt: 52, remaining: 0>
 	fmt.Println("New dealt cards:", newCards)          // 46 cards dealt in this turn
 	fmt.Println("All dealt cards:", deck.DealtCards()) // 52 cards dealt in total
 
 	newCards = deck.Deal(1)
+	fmt.Println(deck)                                  // goker.Deck<dealt: 52, remaining: 0>
 	fmt.Println("New dealt cards:", newCards)          // 0 cards dealt in this turn
 	fmt.Println("All dealt cards:", deck.DealtCards()) // 52 cards dealt in total
+}
 ```
