@@ -1,11 +1,14 @@
 package goker
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
 
 type Deck interface {
+	fmt.Stringer
+
 	// Get all dealt cards
 	DealtCards() []Card
 
@@ -13,6 +16,10 @@ type Deck interface {
 	// To access all dealt cards, use `DealCards()`.
 	// If there're not enough cards, deal all the remaining ones.
 	Deal(int) []Card
+}
+
+func (deck deckStruct) String() string {
+	return fmt.Sprintf("goker.Deck<dealt: %d, remaining: %d>", len(deck.dealtCards), len(deck.remainingCards))
 }
 
 func (deck deckStruct) DealtCards() []Card {

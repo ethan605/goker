@@ -1,8 +1,11 @@
 package goker
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func checkDuplicatedCards(cards []Card) *Card {
@@ -21,11 +24,11 @@ func checkDuplicatedCards(cards []Card) *Card {
 
 func TestNewDeck(t *testing.T) {
 	deck := NewDeck()
+	dealtCards := deck.DealtCards()
+	desc := fmt.Sprint(deck)
 
-	if dealtCards := deck.DealtCards(); len(dealtCards) > 0 {
-		t.Errorf("NewDeck() initiated with non-empty dealt cards %q", dealtCards)
-	}
-
+	assert.Equal(t, len(dealtCards), 0, fmt.Sprintf("NewDeck() should init with non-empty dealt cards, got %q", dealtCards))
+	assert.Equal(t, desc, "goker.Deck<dealt: 0, remaining: 52>", "unexpected Deck.String() value")
 }
 
 func TestDeckDeal(t *testing.T) {
@@ -35,36 +38,27 @@ func TestDeckDeal(t *testing.T) {
 		cardsNum        int
 		dealtCards      int
 		totalDealtCards int
+		desc            string
 	}{
-		{0, 0, 0},
-		{1, 1, 1},
-		{1, 1, 2},
-		{5, 5, 7},
-		{99, 45, 52}, // All cards dealt
-		{99, 0, 52},  // All cards dealt
+		{0, 0, 0, "goker.Deck<dealt: 0, remaining: 52>"},
+		{1, 1, 1, "goker.Deck<dealt: 1, remaining: 51>"},
+		{1, 1, 2, "goker.Deck<dealt: 2, remaining: 50>"},
+		{5, 5, 7, "goker.Deck<dealt: 7, remaining: 45>"},
+		{99, 45, 52, "goker.Deck<dealt: 52, remaining: 0>"}, // All cards dealt
+		{99, 0, 52, "goker.Deck<dealt: 52, remaining: 0>"},  // No more cards dealt
 	}
 
 	for _, table := range tables {
 		dealtCards := deck.Deal(table.cardsNum)
 		totalDealtCards := deck.DealtCards()
+		desc := fmt.Sprint(deck)
+		duplicatedCard := checkDuplicatedCards(totalDealtCards)
+		errMessage := fmt.Sprintf("unexpected Deck.Deal(%d) value", table.cardsNum)
 
-		if len(dealtCards) != table.dealtCards {
-			t.Errorf(
-				"deck.Deal(%d): expect %d cards dealt in turn, got %d",
-				table.cardsNum, table.dealtCards, len(dealtCards),
-			)
-		}
-
-		if len(totalDealtCards) != table.totalDealtCards {
-			t.Errorf(
-				"deck.Deal(%d): expect %d cards dealt in total, got %d",
-				table.cardsNum, table.totalDealtCards, len(totalDealtCards),
-			)
-		}
-
-		if duplicatedCard := checkDuplicatedCards(totalDealtCards); duplicatedCard != nil {
-			t.Errorf("deck.Deal(%d): %q was dealt duplicately", table.cardsNum, *duplicatedCard)
-		}
+		assert.Equal(t, len(dealtCards), table.dealtCards, errMessage)
+		assert.Equal(t, len(totalDealtCards), table.totalDealtCards, errMessage)
+		assert.Equal(t, desc, table.desc, errMessage)
+		assert.Nil(t, duplicatedCard, errMessage)
 	}
 }
 
@@ -73,8 +67,7 @@ func TestShuffledCards(t *testing.T) {
 
 	for _, rank := range allRanks {
 		for _, suit := range allSuits {
-			card, _ := NewCard(rank, suit)
-			orderedCards = append(orderedCards, card)
+			orderedCards = append(orderedCards, cardStruct{rank, suit})
 		}
 	}
 
@@ -92,9 +85,8 @@ func TestShuffledCards(t *testing.T) {
 	for _, table := range tables {
 		orderedChunk := orderedCards[table.from:table.to]
 		shuffledChunk := shuffledCards[table.from:table.to]
+		errMessage := fmt.Sprintf("Deck wasn't shuffled well enough: %q (range %d %d)", shuffledChunk, table.from, table.to)
 
-		if reflect.DeepEqual(orderedChunk, shuffledChunk) {
-			t.Errorf("Deck wasn't shuffled well enough: %q (range %d %d)", shuffledChunk, table.from, table.to)
-		}
+		assert.Equal(t, reflect.DeepEqual(orderedChunk, shuffledChunk), false, errMessage)
 	}
 }

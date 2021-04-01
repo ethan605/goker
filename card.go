@@ -1,7 +1,6 @@
 package goker
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -42,29 +41,16 @@ type Card interface {
 	Suit() Suit
 }
 
+func (card cardStruct) String() string {
+	return fmt.Sprintf("goker.Card<%s of %s>", namedRanks[card.rank-Two], card.suit)
+}
+
 func (card cardStruct) Rank() Rank {
 	return card.rank
 }
 
 func (card cardStruct) Suit() Suit {
 	return card.suit
-}
-
-func (card cardStruct) String() string {
-	return fmt.Sprintf("%s of %s", namedRanks[card.rank-Two], card.suit)
-}
-
-// Raise an error if either rank or suit is invalid
-func NewCard(rank Rank, suit Suit) (Card, error) {
-	if err := rank.validate(); err != nil {
-		return cardStruct{}, err
-	}
-
-	if err := suit.validate(); err != nil {
-		return cardStruct{}, err
-	}
-
-	return cardStruct{rank, suit}, nil
 }
 
 /* Private stuffs */
@@ -80,22 +66,4 @@ var (
 type cardStruct struct {
 	rank Rank
 	suit Suit
-}
-
-func (rank Rank) validate() error {
-	if rank >= Two && rank <= Ace {
-		return nil
-	}
-
-	return errors.New("Invalid rank")
-}
-
-func (suit Suit) validate() error {
-	switch suit {
-	case Heart, Spade, Club, Diamond:
-		return nil
-
-	default:
-		return errors.New("Invalid suit")
-	}
 }
