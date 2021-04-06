@@ -4,7 +4,7 @@ Poker machine, written in Go
 
 **Table of Contents**
 - Documentation
-	- [Sequence diagrams](./docs/SEQUENCES.md)
+	- [Flows](./docs/FLOWS.md)
 - [Components](#components)
 	- [Cards](#cards)
 	- [Decks](#decks)

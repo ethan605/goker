@@ -1,17 +1,18 @@
-**Goker sequence diagrams**
+# Goker flows
 
 - [Player flow](#player-flow)
-- [Hand flow](#hand-flow)
+- [Dealer flow](#dealer-flow)
 - [Betting flow](#betting-flow)
 - [Player folds](#player-folds)
+- [Winner flow](#winner-flow)
 
-# Player flow
+## Player flow
 
 ```mermaid
 sequenceDiagram
     participant Player
     participant Pot
-    participant Hand
+    participant Dealer
     participant Table
 
     Player->>+Table: Join table
@@ -27,28 +28,27 @@ sequenceDiagram
     alt is first Player
         Table->>Table: Wait for more Players
     else 
-        Table->>Table: Wait for next Hand
+        Table->>Table: Wait for next Dealer
     end
 
-    Table->>+Player: Start new hand
-    Note over Player,Table: See "Hand flow"
-    Player-->>-Table: Actions
+    Table->>Dealer: Start new hand
+    Note over Player,Table: See "Dealer flow"
 
     Player->>+Table: Left table
     Table->>-Table: Check and update dealer button
 ```
 
-# Hand flow
+## Dealer flow
 
 ```mermaid
 sequenceDiagram
     participant Player
     participant Pot
-    participant Hand
+    participant Dealer
     participant Table
 
-    Table->>Hand: Start new hand
-    Table->>Pot: Start new hand
+    Table->>Dealer: Start new hand
+    Dealer->>Pot: New betting rounds
 
     Pot->>+Player: "Pre-flop" betting round
     activate Player
@@ -59,32 +59,36 @@ sequenceDiagram
     end
     deactivate Player
     
-    Pot->>Hand: "Pre-flop" betting done
+    Pot->>Dealer: "Pre-flop" betting done
 
     loop until all hold cards are dealt
-        Hand->>Player: Deal hold cards
+        Dealer->>Player: Deal hold cards
     end
 
-    Pot->>+Player: "Flop" betting round
+    Pot->>Player: "Flop" betting round
+    activate Player
     Note over Player,Table: See "Betting flow"
-    Player-->>-Pot: Actions
 
-    Pot->>+Player: "Turn" betting round
+    Pot->>Player: "Turn" betting round
     Note over Player,Table: See "Betting flow"
-    Player-->>-Pot: Actions
 
-    Pot->>+Player: "River" betting round
+    Pot->>Player: "River" betting round
     Note over Player,Table: See "Betting flow"
-    Player-->>-Pot: Actions
+    deactivate Player
+
+    Dealer->>+Player: Showdown
+    Player-->>-Dealer: Face-up cards
+    Dealer->>Dealer: Rank player hands
+    Note over Player,Table: See "Winner flow"
 ```
 
-# Betting flow
+## Betting flow
 
 ```mermaid
 sequenceDiagram
     participant Player
     participant Pot
-    participant Hand
+    participant Dealer
     participant Table
 
     Pot->>Player: New betting round
@@ -92,7 +96,7 @@ sequenceDiagram
     loop until active bets matched
     activate Player
         alt fold
-            Note over Player,Hand: See "Player folds"
+            Note over Player,Dealer: See "Player folds"
         else
             Player-->>Pot: Open/Call/Raise/Re-raise
         end
@@ -102,20 +106,16 @@ sequenceDiagram
     Pot->>Pot: Collect chips
 
     alt only 1 active bet left
-        Pot->>Table: Hand ended
-        Table->>Player: Win
-        Table->>Pot: Reward chips
-        Pot->>Player: Reward chips
-        Table->>Hand: Clear hand
-        Hand->>Player: Recall hold cards
+        Pot->>Dealer: Hand ended
+        Note over Player,Table: See "Winner flow"
     else
         opt all-ins
             Pot->>Pot: Calculate side pot
         end
-        Pot->>Hand: Betting done
-        Hand->>Hand: Burn cards
-        Hand->>Hand: Deal community cards
-        Hand->>Player: Community cards dealt
+        Pot->>Dealer: Betting done
+        Dealer->>Dealer: Burn cards
+        Dealer->>Dealer: Deal community cards
+        Dealer->>Player: Community cards dealt
     end
 ```
 
@@ -125,17 +125,31 @@ sequenceDiagram
 sequenceDiagram
     participant Player
     participant Pot
-    participant Hand
+    participant Dealer
     participant Table
 
     Pot->>+Player: New betting round
     Player-->>-Pot: Fold
-    opt
-        Pot->>Pot: Collect chips
-    end
 
-    Pot->>Hand: Fold
-    Hand->>Hand: Exclude player from next betting rounds
-    Hand-->>+Player: Recall hold cards
-    Player->>-Hand: Hold cards
+    Pot->>Dealer: Fold
+    Dealer->>Dealer: Exclude player from next betting rounds
+    Dealer->>+Player: Recall hold cards
+    Player-->>-Dealer: Hold cards
+```
+
+## Winner flow
+
+```mermaid
+sequenceDiagram
+    participant Player
+    participant Pot
+    participant Dealer
+    participant Table
+
+    Dealer->>Player: Winner
+    Dealer->>Pot: Reward chips
+    Pot->>Player: Reward chips
+    Dealer->>+Player: Recall hold cards
+    Player-->>-Dealer: Hold cards
+    Dealer->>Table: Hand ended
 ```
