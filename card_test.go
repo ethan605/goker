@@ -14,11 +14,11 @@ func TestCardGetters(t *testing.T) {
 		suit Suit
 		desc string
 	}{
-		{cardStruct{7, Heart}, 7, "Heart", "goker.Card<7 of Heart>"},
-		{cardStruct{3, Spade}, 3, "Spade", "goker.Card<3 of Spade>"},
-		{cardStruct{Jack, Club}, 11, "Club", "goker.Card<Jack of Club>"},
-		{cardStruct{Queen, Diamond}, 12, "Diamond", "goker.Card<Queen of Diamond>"},
-		{cardStruct{King, Heart}, 13, "Heart", "goker.Card<King of Heart>"},
+		{cardStruct{7, Heart}, 7, "♥", "goker.Card<7♥>"},
+		{cardStruct{3, Spade}, 3, "♠", "goker.Card<3♠>"},
+		{cardStruct{Jack, Club}, 11, "♣", "goker.Card<J♣>"},
+		{cardStruct{Queen, Diamond}, 12, "♦", "goker.Card<Q♦>"},
+		{cardStruct{King, Heart}, 13, "♥", "goker.Card<K♥>"},
 	}
 
 	for _, table := range tables {
