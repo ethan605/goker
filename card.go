@@ -31,10 +31,10 @@ type Suit string
 
 // Suits enum
 const (
-	Club    Suit = "Club"
-	Diamond Suit = "Diamond"
-	Heart   Suit = "Heart"
-	Spade   Suit = "Spade"
+	Club    Suit = "♣"
+	Diamond Suit = "♦"
+	Heart   Suit = "♥"
+	Spade   Suit = "♠"
 )
 
 // Card represents information about a standard Poker card
@@ -49,7 +49,7 @@ type Card interface {
 }
 
 func (card cardStruct) String() string {
-	return fmt.Sprintf("goker.Card<%s of %s>", namedRanks[card.rank-Two], card.suit)
+	return fmt.Sprintf("goker.Card<%s%s>", namedRanks[card.rank-Two], card.suit)
 }
 
 func (card cardStruct) Rank() Rank {
@@ -66,7 +66,7 @@ var _ Card = (*cardStruct)(nil)
 
 var (
 	allRanks   = [...]Rank{2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace}
-	namedRanks = [...]string{"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"}
+	namedRanks = [...]string{"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"}
 	allSuits   = [...]Suit{Club, Diamond, Heart, Spade}
 )
 
