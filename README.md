@@ -68,7 +68,7 @@ import (
 func main() {
 	deck := goker.NewDeck()
 	fmt.Println(deck)				   // goker.Deck<dealt: 0, remaining: 52>
-	fmt.Println(deck.DealtCards())
+	fmt.Println(deck.DealtCards())			   // No dealt cards yet
 
 	newCards := deck.Deal(1)
 	fmt.Println(deck)                                  // goker.Deck<dealt: 1, remaining: 51>
