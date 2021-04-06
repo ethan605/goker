@@ -1,15 +1,17 @@
-**Table of content**
+**Goker sequence diagrams**
 
-- [Player joins and leaves table](#player-joins-and-leaves-table)
-- [Hand interactions](#hand-interactions)
-- [Normal betting rounds](#normal-betting-rounds)
+- [Player flow](#player-flow)
+- [Hand flow](#hand-flow)
+- [Betting flow](#betting-flow)
 - [Player folds](#player-folds)
 
-# Player joins and leaves table
+# Player flow
 
 ```mermaid
 sequenceDiagram
     participant Player
+    participant Pot
+    participant Hand
     participant Table
 
     Player->>+Table: Join table
@@ -29,13 +31,14 @@ sequenceDiagram
     end
 
     Table->>+Player: Start new hand
-    Player-->>-Table: Join new hand
+    Note over Player,Table: See "Hand flow"
+    Player-->>-Table: Actions
 
     Player->>+Table: Left table
     Table->>-Table: Check and update dealer button
 ```
 
-# Hand interactions
+# Hand flow
 
 ```mermaid
 sequenceDiagram
@@ -47,7 +50,7 @@ sequenceDiagram
     Table->>Hand: Start new hand
     Table->>Pot: Start new hand
 
-    Pot->>+Player: Pre-flop betting round
+    Pot->>+Player: "Pre-flop" betting round
     activate Player
     alt is small blind
         Player-->>Pot: Bet small
@@ -56,26 +59,26 @@ sequenceDiagram
     end
     deactivate Player
     
-    Pot->>Hand: Pre-flop betting done
+    Pot->>Hand: "Pre-flop" betting done
 
     loop until all hold cards are dealt
         Hand->>Player: Deal hold cards
     end
 
-    Pot->>+Player: Extra betting needed
-    Note over Player,Table: See "Normal betting rounds"
+    Pot->>+Player: "Flop" betting round
+    Note over Player,Table: See "Betting flow"
     Player-->>-Pot: Actions
 
-    Pot->>+Player: Turn betting round
-    Note over Player,Table: See "Normal betting rounds"
+    Pot->>+Player: "Turn" betting round
+    Note over Player,Table: See "Betting flow"
     Player-->>-Pot: Actions
 
-    Pot->>+Player: River betting round
-    Note over Player,Table: See "Normal betting rounds"
+    Pot->>+Player: "River" betting round
+    Note over Player,Table: See "Betting flow"
     Player-->>-Pot: Actions
 ```
 
-# Normal betting rounds
+# Betting flow
 
 ```mermaid
 sequenceDiagram
@@ -84,14 +87,14 @@ sequenceDiagram
     participant Hand
     participant Table
 
-    loop until active bets matched
     Pot->>Player: New betting round
 
+    loop until active bets matched
     activate Player
         alt fold
             Note over Player,Hand: See "Player folds"
         else
-            Player-->>Pot: Call/Raise
+            Player-->>Pot: Open/Call/Raise/Re-raise
         end
     deactivate Player
     end
@@ -101,10 +104,14 @@ sequenceDiagram
     alt only 1 active bet left
         Pot->>Table: Hand ended
         Table->>Player: Win
+        Table->>Pot: Reward chips
         Pot->>Player: Reward chips
         Table->>Hand: Clear hand
         Hand->>Player: Recall hold cards
     else
+        opt all-ins
+            Pot->>Pot: Calculate side pot
+        end
         Pot->>Hand: Betting done
         Hand->>Hand: Burn cards
         Hand->>Hand: Deal community cards
@@ -119,14 +126,16 @@ sequenceDiagram
     participant Player
     participant Pot
     participant Hand
+    participant Table
 
-    Pot->>+Player: Betting round
+    Pot->>+Player: New betting round
     Player-->>-Pot: Fold
     opt
         Pot->>Pot: Collect chips
     end
 
-    Player->>+Hand: Fold
-    Hand->>Hand: Exclude from next betting round
-    Hand-->>-Player: Recall hold cards
+    Pot->>Hand: Fold
+    Hand->>Hand: Exclude player from next betting rounds
+    Hand-->>+Player: Recall hold cards
+    Player->>-Hand: Hold cards
 ```

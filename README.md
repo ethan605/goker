@@ -3,6 +3,8 @@
 Poker machine, written in Go
 
 **Table of Contents**
+- Documentation
+	- [Sequence diagrams](docs/SEQUENCES.mermaid.md)
 - [Components](#components)
 	- [Cards](#cards)
 	- [Decks](#decks)
