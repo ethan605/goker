@@ -21,3 +21,7 @@
 ## Player folds
 
 ![Player folds](./assets/player_folds.png)
+
+## Winner flow
+
+![Winner flow](./assets/winner_flow.png)
