@@ -34,7 +34,7 @@ sequenceDiagram
     Table->>Dealer: Start new hand
     Note over Player,Table: See "Dealer flow"
 
-    Player->>+Table: Left table
+    Player->>+Table: Leave table
     Table->>-Table: Check and update dealer button
 ```
 
