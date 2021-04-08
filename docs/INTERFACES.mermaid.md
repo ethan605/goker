@@ -7,40 +7,50 @@ classDiagram
     Table ..> Player
     Pot ..> SidePot
 
-    class Table {
-        -string uuid
-        -Pointer~Dealer~ dealer
-        -Pointer~Pot~ pot
-        -Array~*Player~ players
+    class TableEvent {
 
-        +Close()
+    }
+
+    class HandEvent {
+
+    }
+
+    class PlayerEvent {
+
+    }
+
+    class Table {
+        +NewTable()$ Table
+
         +UUID() string
+        +Subscribe() FanOut~TableEvent~
+        +Close()
     }
 
     class Pot {
-        -Map~Player.uuid, int~ bets
-        -int mainPot
-        -List~SidePot~ sidePots
+        ~bet(string playerUuid, int chips)
+        ~collectChips(Array~*Player~ players)
+        ~rewardChips(*Player player)
 
-        +Bet(string playerUuid, int chips)
-        +CollectChips()
-        +RewardChips(*Player player)
+        +Value() int
+        +PlayerBets() Map~string_int~
+        +SidePots() Array~SidePot~
     }
 
     class SidePot {
-        -List~Player~ eligiblePlayers
+        +EligiblePlayers() Array~string~
+        +Value() int
     }
 
     class Dealer {
-        -Deck deck
     }
 
     class Player {
-        -string uuid
-        -Pointer~Table~ table
+        +NewPlayer(string uuid)$ Player
 
         +UUID() string
-        +JoinTable(*Table table) error
+        +Subscribe() FanOut~PlayerEvent~
+        +JoinTable(*Table table) FanInOut~HandEvent~
         +LeaveTable()
     }
 ```
