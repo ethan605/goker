@@ -5,6 +5,7 @@ Poker machine, written in Go
 **Table of Contents**
 - Documentation
 	- [Data flows](./docs/FLOWS.md)
+	- [Interfaces](./docs/INTERFACES.md)
 - [Components](#components)
 	- [Cards](#cards)
 	- [Decks](#decks)

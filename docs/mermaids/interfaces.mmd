@@ -1,29 +1,13 @@
-# Goker interfaces
-
-```mermaid
 classDiagram
     Table ..> Pot
     Table ..> Dealer
     Table ..> Player
     Pot ..> SidePot
 
-    class TableEvent {
-
-    }
-
-    class HandEvent {
-
-    }
-
-    class PlayerEvent {
-
-    }
-
     class Table {
         +NewTable()$ Table
 
         +UUID() string
-        +Subscribe() FanOut~TableEvent~
         +Close()
     }
 
@@ -49,8 +33,8 @@ classDiagram
         +NewPlayer(string uuid)$ Player
 
         +UUID() string
-        +Subscribe() FanOut~PlayerEvent~
-        +JoinTable(*Table table) FanInOut~HandEvent~
+        +JoinTable(*Table table)
+        +Stack() int
         +LeaveTable()
     }
-```
+
