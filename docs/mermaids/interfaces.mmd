@@ -1,71 +1,95 @@
 classDiagram
-    goker ..> Table
-    Table ..> Player
-    Table ..> Pot
+    Table --|> Identifiable : implements
+    Table --|> Hand : implements
+    Player --|> Gambler : implements
+    Player --|> Identifiable : implements
+    Dealer --|> Hand : implements
+
+    GamePlay ..> Player
+    GamePlay ..> Table
     Table ..> Dealer
-    Pot ..> SidePot
     Dealer ..> Deck
     Deck ..> Card
+    Table ..> Pot
 
-    class goker {
-        +OpenTable()$ Table
+    class Identifiable {
+        <<abstract>>
+        UUID() string
+    }
+
+    class Hand {
+        <<abstract>>
+        NewHand() error
+        FinishHand() error
+    }
+
+    class Gambler {
+        <<abstract>>
+        BetBlind(string) error
+        Bet(int) error
+        Earn(int)
+    }
+
+    class GamePlay {
+        <<concrete>>
+        -List~Table~ tables
+        -List~Player~ players
+
+        OpenTable()$ Table
+        NewPlayer()$ Player
     }
 
     class Table {
+        <<concrete>>
         -string uuid
-        -List~Player~ players
-        -Pot pot
         -Dealer dealer
+        -List~Player~ players
 
-        +UUID() string
-        +PlayerJoin(playerUuid string)
-        +PlayerLeave(playerUuid string)
-        +Close()
+        PlayerJoin(string)
+        PlayerLeave(string)
+        Close() error
     }
 
     class Player {
+        <<concrete>>
         -string uuid
         -int stack
-        -Array~Card~ holdCards
-        -int currentBet
+        -List~Card~ holdCards
 
-        +UUID() string
-        +Stack() int
-        +HoldCards() Array~Card~
-
-        +Bet(chips int) error
-        +FinishHand(earnedChips int)
-    }
-
-    class Pot {
-        -int value
-        -List~*Player~ eligiblePlayers
-
-        ~collectChips()
-        ~rewardChips(*Player player)
-
-        +Value() int
-        +EligiblePlayers() Array~string~
-        +PlayerBets() Map~string_int~
-        +SidePots() Array~SidePot~
+        Stack() int
+        HoldCards() List~Card~
     }
 
     class Dealer {
+        <<concrete>>
         -Deck deck
     }
 
     class Deck {
+        <<concrete>>
         -dealtCards List~Card~
         -remainingCards List~Card~
 
-        +DealtCards() List~Card~
-        +Deal(cardsNum int) List~Card~
+        DealtCards() List~Card~
+        Deal(int) List~Card~
     }
 
     class Card {
+        <<concrete>>
         -Rank rank
         -Suit suit
 
-        +Rank() Rank
-        +Suit() Suit
+        Rank() Rank
+        Suit() Suit
+    }
+
+    class Pot {
+        <<concrete>>
+        -int value
+        -List~Gambler~ eligibles
+
+        Value() int
+        Eligibles() List~Gambler~
+        CollectChips()
+        RewardChips(Gambler)
     }

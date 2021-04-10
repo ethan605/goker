@@ -20,7 +20,7 @@ sequenceDiagram
 
     alt only 1 active bet left
         Pot->>Dealer: Hand finished
-        Note over Player,Table: See "Winner flow"
+        Note over Player,Table: See "Hand finishes"
     else
         opt all-ins
             Pot->>Pot: Calculate side pot

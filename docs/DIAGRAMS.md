@@ -5,7 +5,7 @@
 - [Dealer flow](#dealer-flow)
 - [Betting flow](#betting-flow)
 - [Player folds](#player-folds)
-- [Winner flow](#winner-flow)
+- [Hand finishes](#hand-finishes)
 
 ## Interfaces
 
@@ -27,6 +27,6 @@
 
 ![Player folds](./assets/player_folds.svg)
 
-## Winner flow
+## Hand finishes
 
-![Winner flow](./assets/winner_flow.svg)
+![Hand finishes](./assets/hand_finishes.svg)
