@@ -4,7 +4,7 @@ Poker machine, written in Go
 
 **Table of Contents**
 - Documentation
-	- [Flows](./docs/FLOWS.md) ([Mermaid version](./docs/FLOWS.mermaid.md))
+	- [Data flows](./docs/FLOWS.md)
 - [Components](#components)
 	- [Cards](#cards)
 	- [Decks](#decks)
