@@ -8,20 +8,20 @@
 
 ## Player flow
 
-![Player flow](./assets/player_flow.png)
+![Player flow](./assets/player_flow.svg)
 
 ## Dealer flow
 
-![Dealer flow](./assets/dealer_flow.png)
+![Dealer flow](./assets/dealer_flow.svg)
 
 ## Betting flow
 
-![Betting flow](./assets/betting_flow.png)
+![Betting flow](./assets/betting_flow.svg)
 
 ## Player folds
 
-![Player folds](./assets/player_folds.png)
+![Player folds](./assets/player_folds.svg)
 
 ## Winner flow
 
-![Winner flow](./assets/winner_flow.png)
+![Winner flow](./assets/winner_flow.svg)

@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Player
+    participant Pot
+    participant Dealer
+    participant Table
+
+    Pot->>+Player: New betting round
+    Player-->>-Pot: Fold
+
+    Pot->>Dealer: Fold
+    Dealer->>Dealer: Exclude player from next betting rounds
+    Dealer->>+Player: Recall hold cards
+    Player-->>-Dealer: Hold cards
+

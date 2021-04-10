@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant Player
+    participant Pot
+    participant Dealer
+    participant Table
+
+    Table->>Dealer: Start new hand
+    Dealer->>Pot: New betting rounds
+
+    Pot->>+Player: "Pre-flop" betting round
+    activate Player
+    alt is small blind
+        Player-->>Pot: Bet small
+    else is big blind
+        Player-->>Pot: Bet big
+    end
+    deactivate Player
+    
+    Pot->>Dealer: "Pre-flop" betting done
+
+    loop until all hold cards are dealt
+        Dealer->>Player: Deal hold cards
+    end
+
+    Pot->>Player: "Flop" betting round
+    activate Player
+    Note over Player,Table: See "Betting flow"
+
+    Pot->>Player: "Turn" betting round
+    Note over Player,Table: See "Betting flow"
+
+    Pot->>Player: "River" betting round
+    Note over Player,Table: See "Betting flow"
+    deactivate Player
+
+    Dealer->>+Player: Showdown
+    Player-->>-Dealer: Face-up cards
+    Dealer->>Dealer: Rank player hands
+    Note over Player,Table: See "Winner flow"
+
