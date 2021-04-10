@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant Player
+    participant Pot
+    participant Dealer
+    participant Table
+
+    alt not enough chips
+        Dealer->>+Player: Not enough chips
+        activate Player
+        alt buy-in
+            Player-->>Dealer: Stay on the table
+        else
+            Player-->>Table: Leave table
+        end
+        deactivate Player
+    else winner
+        Dealer->>Player: Winner
+        Dealer->>Pot: Reward chips
+        Pot->>Player: Reward chips
+    end
+
+    Dealer->>+Player: Recall hold cards
+    Player-->>-Dealer: Hold cards
+    Dealer->>Table: Hand finished

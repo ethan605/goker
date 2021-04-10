@@ -41,10 +41,10 @@ const (
 type Card interface {
 	fmt.Stringer
 
-	// Standard ranks: 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace
+	// Standard ranks: 2, 3, 4, 5, 6, 7, 8, 9, 10, J (Jack), Q (Queen), K (King), A (Ace)
 	Rank() Rank
 
-	// Standard suits: Club, Diamond, Heart, Spade
+	// Standard suits: ♣ (club), ♦ (diamond), ♥ (heart), ♠ (spade)
 	Suit() Suit
 }
 

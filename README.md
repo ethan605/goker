@@ -3,6 +3,7 @@
 Poker machine, written in Go
 
 **Table of Contents**
+- [Diagrams](./docs/DIAGRAMS.md)
 - [Components](#components)
 	- [Cards](#cards)
 	- [Decks](#decks)
@@ -23,8 +24,8 @@ type Card interface {
 In which:
 
 ```go
-type Rank int // from 2 to 10, Jack, Queen, King and Ace
-type Suit string // "Club", "Diamond", "Heart" and "Spade"
+type Rank int		// 2, 3, 4, 5, 6, 7, 8, 9, 10, J (Jack), Q (Queen), K (King), A (Ace)
+type Suit string	// ♣ (club), ♦ (diamond), ♥ (heart), ♠ (spade)
 ```
 
 The only way to access to a Card instance is via the [Decks](#decks)
@@ -32,8 +33,9 @@ The only way to access to a Card instance is via the [Decks](#decks)
 ### Decks
 
 A deck is a collection of cards, with 2 representative information:
-	- Cards remaining in stack
-	- Cards being dealt
+
+- Cards remaining in stack
+- Cards being dealt
 
 The `Deck` interface provides an accessible way to "deal" with cards:
 
@@ -64,8 +66,8 @@ import (
 
 func main() {
 	deck := goker.NewDeck()
-	fmt.Println(deck) // goker.Deck<dealt: 0, remaining: 52>
-	fmt.Println(deck.DealtCards())
+	fmt.Println(deck)				   // goker.Deck<dealt: 0, remaining: 52>
+	fmt.Println(deck.DealtCards())			   // No dealt cards yet
 
 	newCards := deck.Deal(1)
 	fmt.Println(deck)                                  // goker.Deck<dealt: 1, remaining: 51>

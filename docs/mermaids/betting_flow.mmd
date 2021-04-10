@@ -1,0 +1,33 @@
+sequenceDiagram
+    participant Player
+    participant Pot
+    participant Dealer
+    participant Table
+
+    Pot->>Player: New betting round
+
+    loop until active bets matched
+    activate Player
+        alt fold
+            Note over Player,Dealer: See "Player folds"
+        else
+            Player-->>Pot: Open/Call/Raise/Re-raise
+        end
+    deactivate Player
+    end
+
+    Pot->>Pot: Collect chips
+
+    alt only 1 active bet left
+        Pot->>Dealer: Hand finished
+        Note over Player,Table: See "Hand finishes"
+    else
+        opt all-ins
+            Pot->>Pot: Calculate side pot
+        end
+        Pot->>Dealer: Betting done
+        Dealer->>Dealer: Burn cards
+        Dealer->>Dealer: Deal community cards
+        Dealer->>Player: Community cards dealt
+    end
+
