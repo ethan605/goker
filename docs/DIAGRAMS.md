@@ -1,10 +1,15 @@
-# Goker flows
+# Goker diagrams
 
+- [Interfaces](#interfaces)
 - [Player flow](#player-flow)
 - [Dealer flow](#dealer-flow)
 - [Betting flow](#betting-flow)
 - [Player folds](#player-folds)
 - [Winner flow](#winner-flow)
+
+## Interfaces
+
+![Goker interfaces](./assets/interfaces.svg)
 
 ## Player flow
 
