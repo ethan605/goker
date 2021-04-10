@@ -1,40 +1,71 @@
 classDiagram
+    goker ..> Table
+    Table ..> Player
     Table ..> Pot
     Table ..> Dealer
-    Table ..> Player
     Pot ..> SidePot
+    Dealer ..> Deck
+    Deck ..> Card
+
+    class goker {
+        +OpenTable()$ Table
+    }
 
     class Table {
-        +NewTable()$ Table
+        -string uuid
+        -List~Player~ players
+        -Pot pot
+        -Dealer dealer
 
         +UUID() string
+        +PlayerJoin(playerUuid string)
+        +PlayerLeave(playerUuid string)
         +Close()
     }
 
+    class Player {
+        -string uuid
+        -int stack
+        -Array~Card~ holdCards
+        -int currentBet
+
+        +UUID() string
+        +Stack() int
+        +HoldCards() Array~Card~
+
+        +Bet(chips int) error
+        +FinishHand(earnedChips int)
+    }
+
     class Pot {
-        ~bet(string playerUuid, int chips)
-        ~collectChips(Array~*Player~ players)
+        -int value
+        -List~*Player~ eligiblePlayers
+
+        ~collectChips()
         ~rewardChips(*Player player)
 
         +Value() int
+        +EligiblePlayers() Array~string~
         +PlayerBets() Map~string_int~
         +SidePots() Array~SidePot~
     }
 
-    class SidePot {
-        +EligiblePlayers() Array~string~
-        +Value() int
-    }
-
     class Dealer {
+        -Deck deck
     }
 
-    class Player {
-        +NewPlayer(string uuid)$ Player
+    class Deck {
+        -dealtCards List~Card~
+        -remainingCards List~Card~
 
-        +UUID() string
-        +JoinTable(*Table table)
-        +Stack() int
-        +LeaveTable()
+        +DealtCards() List~Card~
+        +Deal(cardsNum int) List~Card~
     }
 
+    class Card {
+        -Rank rank
+        -Suit suit
+
+        +Rank() Rank
+        +Suit() Suit
+    }

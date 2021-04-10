@@ -19,7 +19,7 @@ sequenceDiagram
     Pot->>Pot: Collect chips
 
     alt only 1 active bet left
-        Pot->>Dealer: Hand ended
+        Pot->>Dealer: Hand finished
         Note over Player,Table: See "Winner flow"
     else
         opt all-ins
